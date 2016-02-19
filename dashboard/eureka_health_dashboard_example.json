@@ -1,0 +1,74 @@
+{
+	"graphs": [{
+			"definition": {
+				"viz": "timeseries",
+				"requests": [{
+					"q": "avg:eureka.node.response_time{$environment} by {eureka_node_name}",
+					"type": "area",
+					"conditional_formats": []
+				}]
+			},
+			"title": "Eureka Response Time per Node"
+		},
+
+
+		{
+			"definition": {
+				"viz": "timeseries",
+				"requests": [{
+					"extra_col": "",
+					"style": {
+						"palette": "dog_classic",
+						"type": "solid",
+						"width": "thick"
+					},
+					"change_type": "absolute",
+					"order_dir": "desc",
+					"compare_to": "hour_before",
+					"q": "avg:eureka.node.convergence_status{$environment} by {eureka_node_name}",
+					"increase_good": true,
+					"order_by": "change",
+					"type": "line",
+					"conditional_formats": []
+				}]
+			},
+			"title": "Eureka Convergence"
+		},
+
+		{
+			"definition": {
+				"viz": "timeseries",
+				"requests": [{
+					"q": "avg:eureka.nodes_num{$environment}",
+					"type": "line",
+					"conditional_formats": []
+				}]
+			},
+			"title": "Eureka Nodes"
+		},
+
+		{
+			"definition": {
+				"viz": "timeseries",
+				"requests": [{
+					"q": "avg:eureka.node.applications_num{$environment} by {eureka_node_name}",
+					"type": "area",
+					"conditional_formats": []
+				}]
+			},
+			"title": "Eureka Applications Number per Node"
+		},
+
+		{
+			"definition": {
+				"viz": "timeseries",
+				"requests": [{
+					"q": "max:eureka.node.response_status{$environment} by {eureka_node_name}",
+					"type": "area",
+					"conditional_formats": []
+				}]
+			},
+			"title": "Eureka Response Status per Node"
+		}
+	]
+}

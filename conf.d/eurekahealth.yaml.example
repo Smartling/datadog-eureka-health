@@ -1,0 +1,23 @@
+instances:
+
+    # Domain name specified in Eureka nodes configuration
+  - domain: stg.eureka.domain.name
+
+    # Eureka application context
+    context: /eureka/v2
+
+    # Eureka region name specified in Eureka nodes configuration
+    region: us-east-1
+
+    # Eureka server port
+    port: 8080
+
+    # List of Datadog tags assigned to metrics
+    tags:
+      - environment:staging
+
+    # List of applications/services which should be present in registry
+    # to consider Eureka node converged.
+    essential_applications:
+      - EUREKA_STG
+      - MY_APPLICATION_NAME
