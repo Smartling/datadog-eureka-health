@@ -22,17 +22,7 @@ class SleurekaCheck(AgentCheck):
     essential_applications = instance.get('essential_applications', [])
     tags = instance.get('tags', [])
 
-    try:
-      txt_records = DNS.dnslookup('txt.' + region + '.' + instance['domain'],'txt')
-
-      # We take first TXT record here
-      if len(txt_records):
-        eureka_nodes = txt_records[0]
-      else:
-        eureka_nodes = []
-    except DNS.ServerError as e:
-      self.gauge('eureka.nodes_num', 0, tags=tags)
-      return
+    eureka_nodes = self.get_eureka_nodes(region, instance)
 
     # Number of nodes found in Eureka dns setup
     self.gauge('eureka.nodes_num', len(eureka_nodes), tags=tags)
@@ -92,3 +82,27 @@ class SleurekaCheck(AgentCheck):
         break
 
     self.gauge('eureka.node.convergence_status', eureka_convergence_status, tags=tags)
+
+  @staticmethod
+  def get_eureka_nodes(region, instance):
+    try:
+      available_dns_names = DNS.dnslookup('txt.' + region + '.' + instance['domain'],'txt')
+      # We take first TXT record here
+      if len(available_dns_names):
+        nodes = []
+        for dns_name in available_dns_names[0]:
+          # Configuring EIPs using DNS.
+          try:
+            hosts = DNS.dnslookup('txt.' + dns_name,'txt')
+            if len(hosts):
+              for host in hosts[0]:
+                nodes.append(host)
+            else:
+              nodes.append(dns_name)
+          except DNS.ServerError as e:
+            nodes.append(dns_name)
+        return nodes
+      else:
+        return []
+    except DNS.ServerError as e:
+      return []

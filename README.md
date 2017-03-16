@@ -5,7 +5,7 @@ This repository contains Datadog check to query Eureka servers health and sample
 * Copy checks.d/eurekahealth.py to /etc/dd-agent/conf.d/eurekahealth.py
 * Configure check according to your Eureka setup (see conf.d/eurekahealth.yaml.example for reference)
 * Install required python modules:
-```pip install lxml dnspython```
+```pip install lxml pydns```
 * Restart datadog agent
 
 ## License
